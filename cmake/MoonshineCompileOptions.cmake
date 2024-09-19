@@ -40,7 +40,9 @@ function(${PROJECT_NAME}_cxx_compile_options target)
             PRIVATE
                 -march=core-avx2                # Specify the name of the target architecture
                 -fdelayed-template-parsing      # Shader.h has a template method that uses a moonray class which is no available to scene_rdl2 and is only used in moonray+
-                -Wno-deprecated-declarations    # disable auto_ptr deprecated warnings from log4cplus-1.
+                $<$<CXX_COMPILER_ID:MSVC>:/W3>
+                $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wno-deprecated-declarations>
+                $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wno-unused-value>    # disable auto_ptr deprecated warnings from log4cplus-1.
                 -Wno-unused-value               # caused by opt-debug build and MNRY_VERIFY.
                 -Wno-switch                     # Disable certain warnings that are enabled by -Wall
                 -Wno-uninitialized              # Disable warning for Interpolater
